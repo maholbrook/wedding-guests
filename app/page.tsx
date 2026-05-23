@@ -2,10 +2,9 @@
 import { useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
+const supabase = createClient(supabaseUrl, supabaseKey)
 
 export default function Home() {
   const [fullName, setFullName] = useState('')
@@ -14,7 +13,7 @@ export default function Home() {
   const [address, setAddress] = useState('')
   const [submitted, setSubmitted] = useState(false)
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     const { error } = await supabase.from('guests').insert([
       { full_name: fullName, email: email, phone: phone, address: address }
